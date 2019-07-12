@@ -106,12 +106,12 @@ def proc_image(path, topath):
 
 def apply(num):
     print(num)
-    base_dir = './data/test/images/'
+    base_dir = './data/train/images/'
     img_dir = os.path.join(base_dir, str(num))
     images = os.listdir(img_dir)
     for image in images:
         img_path = os.path.join(img_dir, image)
-        for i in range(1):
+        for i in range(50):
             topath = os.path.join(img_dir, image.split('.')[0]+'_'+str(i)+'.jpeg')
             proc_image(img_path, topath)
         os.remove(img_path)

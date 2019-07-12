@@ -15,8 +15,8 @@ from sklearn.model_selection import train_test_split
 model = tf.keras.Sequential([
     tf.keras.layers.Conv2D(32, 5, activation=tf.nn.relu, input_shape=(64, 64, 3)),
     tf.keras.layers.MaxPooling2D(2, 2),
-    # tf.keras.layers.Conv3D(64, 3, activation=tf.nn.relu),
-    # tf.keras.layers.MaxPooling2D(2, 2),
+    tf.keras.layers.Conv3D(64, 3, activation=tf.nn.relu),
+    tf.keras.layers.MaxPooling2D(2, 2),
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dense(1024, activation=tf.nn.relu),
     tf.keras.layers.Dropout(rate=0.75),

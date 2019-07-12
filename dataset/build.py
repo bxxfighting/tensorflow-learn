@@ -20,13 +20,13 @@ model = tf.keras.Sequential([
     tf.keras.layers.Conv2D(64, 3, activation=tf.nn.relu),
     tf.keras.layers.MaxPooling2D(2, 2),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation=tf.nn.relu),
+    tf.keras.layers.Dense(1024, activation=tf.nn.relu),
     tf.keras.layers.Dense(10, activation=tf.nn.softmax),
 ])
 
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-batch_size = 128
+batch_size = 256
 train_dataset = train_dataset.repeat().shuffle(train_total).batch(batch_size)
 model.fit(train_dataset, epochs=20, steps_per_epoch=math.ceil(train_total/batch_size))
 
@@ -37,4 +37,3 @@ print('Accuracy on test dataset:', test_accuracy)
 model_name = datetime.now().strftime('%Y%m%d%H%M%S')
 model_name = './model/{}-{}.h5'.format(model_name, test_accuracy)
 model.save(model_name)
-
