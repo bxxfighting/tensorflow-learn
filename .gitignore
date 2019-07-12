@@ -1,1 +1,7 @@
 dataset/data/images
+.DS_Store
+model
+data
+ckpt
+m1
+__pycache__
