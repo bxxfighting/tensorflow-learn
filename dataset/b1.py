@@ -130,11 +130,14 @@ with tf.Session() as sess:
         print("Step " + str(step) + ", Minibatch Loss= " + \
               "{:.4f}".format(loss) + ", Training Accuracy= " + \
               "{:.3f}".format(acc))
-        if acc > 0.99:
-            break
+        if acc > 0.98:
+            model_name = datetime.now().strftime('%Y%m%d%H%M%S')
+            model_name = './ckpt/{}-{}'.format(model_name, str(acc))
+            print(model_name)
+            saver.save(sess, model_name)
 
     print("Optimization Finished!")
     model_name = datetime.now().strftime('%Y%m%d%H%M%S')
-    model_name = './ckpt/{}'.format(model_name)
+    model_name = './ckpt/{}-{}'.format(model_name, str(acc))
     print(model_name)
     saver.save(sess, model_name)
