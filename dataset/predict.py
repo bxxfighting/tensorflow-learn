@@ -15,11 +15,11 @@ test = dataset.test
 test_dataset = test['dataset']
 test_total = test['total']
 
-
 batch_size = 1
 test_dataset = test_dataset.repeat().shuffle(test_total).batch(batch_size)
 
-
+true_count = 0
+fail_count = 0
 for image, label in test_dataset.take(100):
     image = image.numpy()
     label = label.numpy()
@@ -29,4 +29,8 @@ for image, label in test_dataset.take(100):
     is_true = False
     if label == result:
         is_true = True
+        true_count += 1
+    else:
+        fail_count += 1
     print(label, result, is_true)
+print('rate: ', true_count / (true_count + fail_count))
