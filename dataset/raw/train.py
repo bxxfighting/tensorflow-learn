@@ -50,7 +50,8 @@ saver = tf.compat.v1.train.Saver()
 
 with tf.compat.v1.Session() as sess:
     sess.run(init)
-    tf.train.start_queue_runners()
+    coord = tf.train.Coordinator()
+    threads = tf.train.start_queue_runners(coord=coord)
     for step in range(1, num_steps+1):
         _, loss, acc = sess.run([train_op, loss_op, accuracy])
         print('step: ', step, ' loss: ', loss, ' acc: ', acc)
@@ -61,4 +62,6 @@ with tf.compat.v1.Session() as sess:
                 f.write(constant_graph.SerializeToString())
             model_name = './ckpt/{}-{.4f}'.format(model_name, acc)
             saver.save(sess, model_name)
+    coord.request_stop()
+    coord.join(threads)
     print("Done")
