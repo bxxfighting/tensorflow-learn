@@ -8,7 +8,7 @@ import dataset
 
 learning_rate = 0.001
 num_steps = 10000
-batch_size = 128
+batch_size = 1
 dropout = 0.35
 classes = 10
 
@@ -54,18 +54,16 @@ with tf.compat.v1.Session() as sess:
     sess.run(init)
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
-    for step in range(1, num_steps+1):
-        _, loss, acc = sess.run([train_op, loss_op, accuracy])
-        print('step: ', step, ' loss: ', loss, ' acc: ', acc)
-        if acc > 0.98:
-            model_name = datetime.now().strftime('%Y%m%d%H%M%S')
-            constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def, [])
-            with tf.gfile.FastGFile('./pb/{}-{}.pb'.format(model_name, acc), mode='wb') as f:
-                f.write(constant_graph.SerializeToString())
-            model_name = './ckpt/{}-{}'.format(model_name, acc)
-            saver.save(sess, model_name)
+    true_count = 0
+    fail_count = 0
+    for step in range(100):
+        acc, pre, l = sess.run([accuracy, predict, label])
+        print(acc, pre[0], l[0])
+        print(acc, pre[0], l[0])
+        if pre[0] == l[0]:
+            true_count += 1
+        else:
+            fail_count += 1
+    print('rate: ', true_count / (true_count + fail_count))
     coord.request_stop()
     coord.join(threads)
-    print("Done")
-    model_name = './ckpt/{}-end'.format(model_name)
-    saver.save(sess, model_name)
