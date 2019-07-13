@@ -65,3 +65,5 @@ with tf.compat.v1.Session() as sess:
     coord.request_stop()
     coord.join(threads)
     print("Done")
+    model_name = './ckpt/{}-end'.format(model_name)
+    saver.save(sess, model_name)
