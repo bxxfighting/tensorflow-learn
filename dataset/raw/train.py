@@ -48,7 +48,7 @@ predict = tf.argmax(logits_test, 1)
 correct_pred = tf.equal(predict, tf.cast(test_Y, tf.int64))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 init = tf.compat.v1.global_variables_initializer()
-saver = tf.compat.v1.train.Saver()
+saver = tf.compat.v1.train.Saver(max_to_keep=10)
 
 with tf.compat.v1.Session() as sess:
     sess.run(init)
@@ -57,7 +57,7 @@ with tf.compat.v1.Session() as sess:
     for step in range(1, num_steps+1):
         _, loss, acc = sess.run([train_op, loss_op, accuracy])
         print('step: ', step, ' loss: ', loss, ' acc: ', acc)
-        if acc > 0.98:
+        if acc > 0.99:
             model_name = datetime.now().strftime('%Y%m%d%H%M%S')
             constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def, [])
             with tf.gfile.FastGFile('./pb/{}-{}.pb'.format(model_name, acc), mode='wb') as f:

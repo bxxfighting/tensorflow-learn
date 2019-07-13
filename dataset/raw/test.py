@@ -45,13 +45,14 @@ optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
 train_op = optimizer.minimize(loss_op)
 
 predict = tf.argmax(logits_test, 1)
-correct_pred = tf.equal(predict, tf.cast(test_Y, tf.int64))
+label = tf.cast(test_Y, tf.int64)
+correct_pred = tf.equal(predict, label)
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 init = tf.compat.v1.global_variables_initializer()
 saver = tf.compat.v1.train.Saver()
 
 with tf.compat.v1.Session() as sess:
-    sess.run(init)
+    saver.restore(sess, './ckpt/20190713231634-0.9921875')
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(coord=coord)
     true_count = 0
